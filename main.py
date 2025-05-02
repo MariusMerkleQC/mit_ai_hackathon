@@ -6,10 +6,11 @@ from optimization_problem import maximize_utility_with_distance_constraint
 from path_utils import get_abnormal_test_image_paths, get_normal_test_image_paths, load_abnormal_test_images, load_normal_test_images, load_training_images, get_training_image_paths
 from geopy.distance import geodesic
 from image_model_utils import extract_penultimate_features, get_anomaly_score
+from plot_solution import plot_path_on_map
 
 
 ### Parameters ###
-MAXIMUM_TRAVEL_DISTANCE: float = 50 # in km
+MAXIMUM_TRAVEL_DISTANCE: float = 100 # in km
 
 
 if __name__ == "__main__":
@@ -50,11 +51,17 @@ if __name__ == "__main__":
     ]
     scores = [0] + list(abnormal_scores) + list(normal_scores)
 
-    optimal_path = maximize_utility_with_distance_constraint(
+    optimal_predicted_path = maximize_utility_with_distance_constraint(
         utilities=scores,
         distance_matrix=distance_matrix,
         D_max=MAXIMUM_TRAVEL_DISTANCE,
         start_node=0
     )
 
-    print(f"Optimal path: {optimal_path.tour}")
+    print(f"Optimal predicted path: {optimal_predicted_path.tour}")
+
+    plot_path_on_map(
+        locations=coordinates,
+        path_order=optimal_predicted_path.visited,
+        save_path="optimal_path_map.png"
+    )

@@ -49,23 +49,38 @@ def maximize_utility_with_distance_constraint(utilities: list[float], distance_m
     # Force exactly one outgoing edge from starting node
     model.addConstr(gp.quicksum(y[start_node, j] for j in range(n) if j != start_node) == 1, 'StartNodeOutflow')
 
-    # OPTIONAL: If you want a closed loop (start and return to start)
-    # model.addConstr(gp.quicksum(y[i, start_node] for i in range(n) if i != start_node) == 1, 'StartNodeInflow')
-
     # Optimize
     model.optimize()
 
-    # Extract solution
     if model.status == GRB.OPTIMAL:
-        visited = [i for i in range(n) if x[i].X > 0.5]
-        tour = [(i, j) for i in range(n) for j in range(n) if y[i,j].X > 0.5]
-        total_utility = sum(utilities[i] for i in visited)
-        total_distance = sum(distance_matrix[i][j] for (i, j) in tour)
+        # Reconstruct the path order
+        successor = {}
+        for i in range(n):
+            for j in range(n):
+                if y[i, j].X > 0.5:
+                    successor[i] = j
+
+        # Now walk from start_node following the successors
+        path_ordered = [start_node]
+        current = start_node
+        while True:
+            if current not in successor:
+                break
+            next_node = successor[current]
+            if next_node == start_node:
+                break  # If we return to start, stop here
+            path_ordered.append(next_node)
+            current = next_node
+
+
+        total_utility = sum(utilities[i] for i in path_ordered)
+        total_distance = sum(distance_matrix[path_ordered[i]][path_ordered[i+1]] for i in range(len(path_ordered) - 1))
         
-        return OptimalPath(visited, tour, total_utility, total_distance)
+        return OptimalPath(path_ordered, list(successor.items()), total_utility, total_distance)
     else:
         print('No feasible solution found')
         return None
+
 
 
 if __name__ == "__main__":
