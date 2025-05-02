@@ -8,6 +8,7 @@ platforms = ["osx-arm64"]
 [tasks]
 
 [dependencies]
+polars = "*"
 python = ">=3.13"
 numpy = "*"
 scikit-learn = "*"

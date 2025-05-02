@@ -1,0 +1,89 @@
+exclude:
+repos:
+  - repo: local
+    hooks:
+      # ensure pixi environments are up to date
+      # workaround for https://github.com/prefix-dev/pixi/issues/1482
+      - id: pixi-install
+        name: pixi-install
+        entry: pixi install -e lint
+        language: system
+        always_run: true
+        require_serial: true
+        pass_filenames: false
+      - id: docformatter
+        name: docformatter
+        entry: pixi run -e lint docformatter -i
+        language: system
+        types: [python]
+        # https://github.com/Quantco/barmer-hilfsmittel-analytics/pull/845#issuecomment-2199719772
+        exclude: dev/pr_0010_0099/pr_48_facts_in_python
+      # ruff
+      - id: ruff
+        name: ruff
+        entry: pixi run -e lint ruff check --fix --exit-non-zero-on-fix --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+        exclude: ^dev/
+      - id: ruff-format
+        name: ruff-format
+        entry: pixi run -e lint ruff format --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      # mypy
+      # - id: mypy
+      #   name: mypy
+      #   entry: pixi run -e default mypy
+      #   language: system
+      #   types: [python]
+      #   require_serial: true
+      #   exclude: ^(dev/|solution/)
+      # prettier
+      - id: prettier
+        name: prettier
+        entry: pixi run -e lint prettier --write --list-different --ignore-unknown
+        language: system
+        types: [text]
+        files: \.(md|yml|yaml)$
+      # nbstripout
+      - id: nbstripout
+        name: nbstripout
+        entry: pixi run -e lint nbstripout
+        language: system
+        types: [jupyter]
+      # sqlfluff
+      - id: sqlfluff
+        name: sqlfluff
+        entry: pixi run -e lint sqlfluff fix --show-lint-violations --processes 0
+        language: system
+        types: [sql]
+        require_serial: true
+      # taplo
+      - id: taplo
+        name: taplo
+        entry: pixi run -e lint taplo format
+        language: system
+        types: [toml]
+      # pre-commit-hooks
+      - id: trailing-whitespace-fixer
+        name: trailing-whitespace-fixer
+        entry: pixi run -e lint trailing-whitespace-fixer
+        language: system
+        types: [text]
+      - id: end-of-file-fixer
+        name: end-of-file-fixer
+        entry: pixi run -e lint end-of-file-fixer
+        language: system
+        types: [text]
+      - id: check-merge-conflict
+        name: check-merge-conflict
+        entry: pixi run -e lint check-merge-conflict --assume-in-merge
+        language: system
+        types: [text]
+      - id: mixed-line-ending
+        name: mixed-line-ending
+        entry: pixi run -e lint mixed-line-ending
+        language: system
+        types: [text]
