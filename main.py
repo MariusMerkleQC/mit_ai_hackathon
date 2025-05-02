@@ -21,18 +21,27 @@ def load_images(image_paths: list[Path]) -> list[Image.Image]:
     return [load_image(image_path) for image_path in image_paths]
 
 
-def load_training_images() -> list[Image.Image]:
+def get_training_image_paths() -> list[Path]:
     image_files = glob.glob(os.path.join("data/training", "*"))
-    return load_images(image_files)
+    return [Path(image_file) for image_file in image_files]
+
+def get_abnormal_test_image_paths() -> list[Path]:
+    image_files = glob.glob(os.path.join("data/test/abnormal", "*"))
+    return [Path(image_file) for image_file in image_files]
+
+def get_normal_test_image_paths() -> list[Path]:
+    image_files = glob.glob(os.path.join("data/test/normal", "*"))
+    return [Path(image_file) for image_file in image_files]
+
+def load_training_images() -> list[Image.Image]:
+    return load_images(get_training_image_paths())
 
 def load_abnormal_test_images() -> list[Image.Image]:
-    image_files = glob.glob(os.path.join("data/test/abnormal", "*"))
-    return load_images(image_files)
+    return load_images(get_abnormal_test_image_paths())
 
 
 def load_normal_test_images() -> list[Image.Image]:
-    image_files = glob.glob(os.path.join("data/test/normal", "*"))
-    return load_images(image_files)
+    return load_images(get_normal_test_image_paths())
 
 def extract_penultimate_features(image: Image.Image) -> np.ndarray:
     preprocessor = transforms.Compose([
@@ -59,23 +68,24 @@ def get_anomaly_score(image: Image.Image, nn_model: NearestNeighbors) -> float:
 
 
 
-### Data Loading ###
-training_images = load_training_images()
-abnormal_test_images = load_abnormal_test_images()
-normal_test_images = load_normal_test_images()
-print(f"Loaded {len(training_images)} training images")
-print(f"Loaded {len(abnormal_test_images)} abnormal test images")
-print(f"Loaded {len(normal_test_images)} normal test images")
+if __name__ == "__main__":
+    ### Data Loading ###
+    training_images = load_training_images()
+    abnormal_test_images = load_abnormal_test_images()
+    normal_test_images = load_normal_test_images()
+    print(f"Loaded {len(training_images)} training images")
+    print(f"Loaded {len(abnormal_test_images)} abnormal test images")
+    print(f"Loaded {len(normal_test_images)} normal test images")
 
-### Feature Extraction ###
-training_features = np.array([extract_penultimate_features(image) for image in training_images])
-abnormal_test_features = np.array([extract_penultimate_features(image) for image in abnormal_test_images])
-normal_test_features = np.array([extract_penultimate_features(image) for image in normal_test_images])
+    ### Feature Extraction ###
+    training_features = np.array([extract_penultimate_features(image) for image in training_images])
+    abnormal_test_features = np.array([extract_penultimate_features(image) for image in abnormal_test_images])
+    normal_test_features = np.array([extract_penultimate_features(image) for image in normal_test_images])
 
-nn_model = NearestNeighbors(n_neighbors=5, algorithm='auto').fit(training_features)
-abnormal_scores = np.array([get_anomaly_score(image, nn_model) for image in abnormal_test_images])
-normal_scores = np.array([get_anomaly_score(image, nn_model) for image in normal_test_images])
-print(f"Abnormal scores: {abnormal_scores}")
-print(f"Mean abnormal score: {np.mean(abnormal_scores)}")
-print(f"Normal scores: {normal_scores}")
-print(f"Mean normal score: {np.mean(normal_scores)}")
+    nn_model = NearestNeighbors(n_neighbors=5, algorithm='auto').fit(training_features)
+    abnormal_scores = np.array([get_anomaly_score(image, nn_model) for image in abnormal_test_images])
+    normal_scores = np.array([get_anomaly_score(image, nn_model) for image in normal_test_images])
+    print(f"Abnormal scores: {abnormal_scores}")
+    print(f"Mean abnormal score: {np.mean(abnormal_scores)}")
+    print(f"Normal scores: {normal_scores}")
+    print(f"Mean normal score: {np.mean(normal_scores)}")
