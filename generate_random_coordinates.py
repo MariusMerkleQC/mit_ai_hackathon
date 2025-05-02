@@ -1,12 +1,16 @@
 import piexif
 import random
-from main import get_normal_test_image_paths, get_abnormal_test_image_paths, get_training_image_paths
+from path_utils import get_normal_test_image_paths, get_abnormal_test_image_paths, get_training_image_paths
 
 def generate_random_coordinates():
     # Generate random float coordinates for latitude and longitude
     latitude = random.uniform(47.5, 48.8)
     longitude = random.uniform(7.5, 8.5)
 
+    return latitude, longitude
+
+
+def convert_random_coodtinates(latitude, longitude):
     # Convert to deg, min, sec format
     latitude_in_dms = convert_to_deg_min_sec(latitude)
     longitude_in_dms = convert_to_deg_min_sec(longitude)
@@ -45,4 +49,5 @@ if __name__ == "__main__":
     paths = get_training_image_paths() + get_abnormal_test_image_paths() + get_normal_test_image_paths()
     for path in paths:
         latitude, longitude = generate_random_coordinates()
-        set_gps_location(str(path), latitude, longitude)
+        latitude_in_dms, longitude_in_dms = convert_random_coodtinates(latitude, longitude)
+        set_gps_location(str(path), latitude_in_dms, longitude_in_dms)

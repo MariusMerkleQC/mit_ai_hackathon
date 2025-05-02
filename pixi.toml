@@ -1,6 +1,6 @@
 [project]
 name = "mit-ai-hackathon"
-channels = ["conda-forge"]
+channels = ["conda-forge", "gurobi"]
 platforms = ["osx-arm64"]
 
 [system-requirements]
@@ -15,3 +15,5 @@ scikit-learn = "*"
 pytorch = "*"
 torchvision = "*"
 piexif = "*"
+geopy = "*"
+gurobi = "*"
