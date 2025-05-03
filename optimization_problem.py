@@ -23,7 +23,7 @@ def maximize_utility_with_distance_constraint(utilities: list[float], distance_m
     s = model.addVars(n, vtype=GRB.CONTINUOUS, lb=0, ub=n-1, name='s')
 
     # Objective: maximize total utility
-    model.setObjective(gp.quicksum(utilities[i] * x[i] for i in range(n)), GRB.MAXIMIZE)
+    model.setObjective(gp.quicksum(utilities[i] * x[i] for i in range(n)) - gp.quicksum(0.01*distance_matrix[i][j]*y[i, j] for i in range(n) for j in range(n)), GRB.MAXIMIZE)
 
     # Constraint: total distance must be within D_max
     model.addConstr(gp.quicksum(distance_matrix[i][j] * y[i,j] for i in range(n) for j in range(n)) <= D_max, 'DistanceConstraint')

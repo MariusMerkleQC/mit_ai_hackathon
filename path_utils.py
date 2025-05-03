@@ -29,6 +29,10 @@ def get_normal_test_image_paths() -> list[Path]:
     image_files = glob.glob(os.path.join("data/test/normal", "*"))
     return [Path(image_file) for image_file in image_files][:10]
 
+def get_case_study_image_paths() -> list[Path]:
+    image_files = glob.glob(os.path.join("case_study_data", "*"))
+    return [Path(image_file) for image_file in image_files]
+
 def load_training_images() -> list[Image.Image]:
     return load_images(get_training_image_paths())
 
@@ -38,3 +42,7 @@ def load_abnormal_test_images() -> list[Image.Image]:
 
 def load_normal_test_images() -> list[Image.Image]:
     return load_images(get_normal_test_image_paths())
+
+
+def load_case_study_images() -> list[Image.Image]:
+    return load_images(get_case_study_image_paths())
