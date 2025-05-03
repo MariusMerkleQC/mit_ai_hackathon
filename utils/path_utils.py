@@ -19,15 +19,15 @@ def load_images(image_paths: list[Path]) -> list[Image.Image]:
 
 def get_training_image_paths() -> list[Path]:
     image_files = glob.glob(os.path.join("data/training", "*"))
-    return [Path(image_file) for image_file in image_files][:10]
+    return [Path(image_file) for image_file in image_files]
 
 def get_abnormal_test_image_paths() -> list[Path]:
     image_files = glob.glob(os.path.join("data/test/abnormal", "*"))
-    return [Path(image_file) for image_file in image_files][:10]
+    return [Path(image_file) for image_file in image_files]
 
 def get_normal_test_image_paths() -> list[Path]:
     image_files = glob.glob(os.path.join("data/test/normal", "*"))
-    return [Path(image_file) for image_file in image_files][:10]
+    return [Path(image_file) for image_file in image_files]
 
 def get_case_study_image_paths() -> list[Path]:
     image_files = glob.glob(os.path.join("case_study_data", "*"))
