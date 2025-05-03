@@ -1,11 +1,11 @@
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-from coordinate_utils import get_gps_data
+from utils.coordinate_utils import get_gps_data
 from generate_random_coordinates import generate_random_coordinates
 from optimization_problem import maximize_utility_with_distance_constraint
-from path_utils import get_case_study_image_paths, load_case_study_images
+from utils.path_utils import get_case_study_image_paths, load_case_study_images
 from geopy.distance import geodesic
-from image_model_utils import extract_penultimate_features, get_anomaly_score
+from utils.image_model_utils import extract_penultimate_features, get_anomaly_score
 from plot_solution import plot_path_on_map
 
 

@@ -1,6 +1,6 @@
 import piexif
 import random
-from path_utils import get_normal_test_image_paths, get_abnormal_test_image_paths, get_training_image_paths
+from utils.path_utils import get_normal_test_image_paths, get_abnormal_test_image_paths, get_training_image_paths
 
 def generate_random_coordinates():
     # Generate random float coordinates for latitude and longitude
