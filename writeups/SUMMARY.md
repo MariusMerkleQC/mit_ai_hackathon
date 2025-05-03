@@ -1,0 +1,9 @@
+# Project Summary
+
+In this hackathon, I addressed Challenge 5: Anomaly Detection for Thermal Drone Footage, with the goal of optimizing search and rescue operations for missing persons. Instead of solely identifying anomalous images, I focused on a more practical objective: generating optimized search paths to guide rescue teams toward areas with the highest likelihood of success.
+
+To make this more tangible, imagine the following case study: a rescue team is informed that a person has been missing for 20 hours in the Black Forest, so there are only four hours left to find them. The team can now run my algorithm with their available inputs: thermal drone images of the past hours, and a time constraint of 4 hours. Within seconds, my algorithm provides an optimal path fo find the missing person, thereby maximizing the chance of saving their life.
+
+In the background, there is a three-step algorithm combining computer vision, machine learning, and optimization: I used a pre-trained ResNet18 model to extract features from thermal images, applied a k-nearest neighbors (kNN) algorithm for anomaly detection, and then formulated an optimization problem to recommend a search path based on the anomaly scores while respecting distance constraints.
+
+This solution directly benefits mountain rescue teams and similar organizations by providing actionable intelligence, not just raw predictions. It enables teams to prioritize their efforts effectively, potentially reducing search times and improving outcomes. This is a significant improvement over simply identifying which images are anomalous, as it provides actionable intelligence to the rescue team.
