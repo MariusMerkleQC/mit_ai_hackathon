@@ -20,15 +20,15 @@ I tackled this challenge using a "predict-then-optimize" approach:
 2. **Prediction (anomaly detection)**: I first extracted embeddings from the 166 normal images (without a missing persion). Then, I extracted embeddings from the 60 images in the test set (30 normal and 30 abnormal). I then used a k-nearest neighbors (kNN) algorithm to compute the mean distance of each test image to its 5 nearest neighbors in the training set. The higher the distance, the more likely the image is to be abnormal.
 3. **Optimization**: The image distance scores serve as an _input_ to the optimization problem. The goal is to maximize the sum of image distance scores (as a proxy for the probability of finding a missing person), while constraining that the total distance traveled by the rescue team (as a proxy for available time).
 
-## 3. What has worked well with these tools?
+# 3. What has worked well with these tools?
 
 The pre-trained RestNet18 model provided a powerful feature extractor, as it was trained on a large dataset (ImageNet) and is capable of capturing complex patterns in images. The optimization problem could also be solved efficiently using integer programming.
 
-## 4. What was challenging?
+# 4. What was challenging?
 
 The most challenging part is computing the distance scores for the test images. With 512 dimensions, the distance scores start suffering from the curse of dimensionality.
 
-## 5. How have you spent your time?
+# 5. How have you spent your time?
 
 Overall, I could only work for 5 hours on this challenge, as I feel quite sick and had to sleep for 10 hours overnight. I spent
 - 30 minutes on understanding the challenge
